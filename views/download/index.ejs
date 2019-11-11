@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nodejs file upload with MongoDB</title>
+</head>
+
+<body>
+    <% include ../partials/nav %>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <nav style="background-color: #082768;">
+                    <x class="nav-wrapper"><span class="flow-text">&nbsp; Nodejs file upload with MongoDB</span></x>
+                </nav>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="input-field col s12"><h4>Photo Gallery</h4></div>
+            <form class="form-inline" name="fileDownload" action="/download" method="POST">
+            <button id="download-button" class="btn btn-primary btn-lg" >Download multiple files</button>
+              <div class="row">
+                <% for(let i = 0; i < photolist.length; i++){%>
+                  <% let path ="../"+photolist[i].path%>
+                <div class ="col s3"> <input type="checkbox" name="multifile" id="<%=i%>" value="<%= path%>"/><label for="<%=i%>"><img src = <%= path%> alt="image" class="responsive-img"/><%=i%></label></div>
+                <% if(((i+1)%4) == 0){%>
+                </div><div class="row">
+                <% }%>
+            <% }%>
+        </div>
+    
+      </form>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
