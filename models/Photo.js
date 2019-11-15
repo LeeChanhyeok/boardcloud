@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var photoSchema = new Schema({
-
+title:{type:String, required:[true,"Title is required!"]},
   path:  { type: String },
   caption: { type: String }
   });

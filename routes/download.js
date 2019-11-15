@@ -1,13 +1,13 @@
 var express = require('express');
 var router    = express.Router();
-var upload    = require('./upload');
 var mongoose  = require('mongoose');
 var Photo     = require('../models/Photo');
 
 var request = require('request');
-var path = require('path');
-var os = require('os');
-var fs = require('fs');
+var zip = require('express-zip');
+// var path = require('path');
+// var os = require('os');
+// var fs = require('fs');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
@@ -22,26 +22,51 @@ router.post("/", function(req, res){
   //console.log(req.body.multifile);
 
   let urlList = req.body.multifile;
-
-  var download = function(url, dest, callback){
-
-      request.get(url)
-      .on('error', function(err) {console.log(err)} )
-      .pipe(fs.createWriteStream(dest))
-      .on('close', callback);
-
-  };
-
+  let jsonArray = [];
   urlList.forEach( function(str) {
 
   	var filename =  str.split('/').pop();
-  	console.log('Downloading ' + filename);
-    var filePath =  "http://localhost:4000/files/"+filename;
-    console.log('Path ' + filePath);
-  	download(filePath, filename, function(){console.log('Finished Downloading' + filename)});
+  	//console.log('Downloading ' + filename);
+    // var fullUrl = req.protocol + '://' + req.get('host');
+    // var filePath =  fullUrl +"/files/"+filename;
+    // console.log('Path ' + filePath);
+
+    jsonArray.push({"path":"public/files/"+filename,"name":filename});
+    //jsonArray.append("name",filename);
+    // console.log('Finished Downloading' + filename);
+  	// download(filePath, filename, function(){console.log('Finished Downloading' + filename)});
 
   });
-  res.redirect("/download");
+
+  //console.log(jsonArray);
+
+  res.zip(jsonArray,"file");
+  // var download = function(url, dest, callback){
+  //
+  //     request.get(url)
+  //     .on('error', function(err) {console.log(err)} )
+  //     .pipe(fs.createWriteStream(dest))
+  //     .on('close', callback);
+  //
+  // };
+
+  //urlList.forEach( function(str) {
+
+  	//var filename =  str.split('/').pop();
+  	//console.log('Downloading ' + filename);
+    //var fullUrl = req.protocol + '://' + req.get('host');
+    //var filePath =  fullUrl +"/files/"+filename;
+    //console.log('Path ' + filePath);
+
+    //res.download("public/files/"+filename);
+    //console.log('Finished Downloading' + filename);
+  	//download(filePath, filename, function(){console.log('Finished Downloading' + filename)});
+
+  //});
+  //res.redirect("/download");
+
+
+  //res.end();
 });
 
 

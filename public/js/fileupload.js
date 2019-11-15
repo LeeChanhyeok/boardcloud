@@ -1,7 +1,7 @@
 
 $(function() {
  //$("#files").load("filelist");
- $("input[type='button']").click(function() {
+ $("button[type='submit']").click(function() {
     var formData = new FormData();
     if($('#myFile').val()=='') {
      alert("Please choose file!");
@@ -13,10 +13,16 @@ $(function() {
       var file = document.getElementById('myFile').files[i];
       formData.append('uploadfile', file);
   }
-    //console.log(file)
-    //console.log(formData)
+  var title = document.getElementById('title').value;
+  console.log(document.getElementById('title').value);
+  var body = document.getElementById('body').value;
+  console.log(document.getElementById('body').value);
+  //console.log(post.title);
+   formData.append('title', title);
+   formData.append('body', body);
+
    var xhr = new XMLHttpRequest();
-    xhr.open('post', '', true);
+    xhr.open('post', '/posts', true);
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
@@ -26,17 +32,19 @@ $(function() {
     };
     xhr.onerror = function(e) {
       alert('An error occurred while submitting the form. Maybe your file is too big');
+      window.location.href = '/posts';
     };
    xhr.onload = function() {
       var file = xhr.responseText;
        $('div.progress div').css('width','0%');
        $('div.progress').hide();
-        alert( "File uploaded successfully!");
-        window.location.href = '?msg=1';
-      //showMsg("alert alert-success", "File uploaded successfully!");
+       alert( "File uploaded successfully!");
+
+       window.location.href = '/posts';
       $('#myFile').val('');
     };
-    xhr.send(formData);
+      xhr.send(formData);
+
    return false;
 
  });

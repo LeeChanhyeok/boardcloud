@@ -1,8 +1,9 @@
 var express  = require("express");
 var router   = express.Router();
 var Post     = require("../models/Post");
+var Photo     = require('../models/Photo');
 var util     = require("../util");
-
+const uploadController = require("../controllers/upload");
 // Index
 router.get("/", function(req, res){
   Post.find({})
@@ -22,7 +23,8 @@ router.get("/new", util.isLoggedin, function(req, res){
 });
 
 // create
-router.post("/", util.isLoggedin, function(req, res){
+router.post("/", util.isLoggedin, uploadController.multipleUpload, function(req, res){
+
   req.body.author = req.user._id;
   Post.create(req.body, function(err, post){
     if(err){
@@ -43,6 +45,16 @@ router.get("/:id", function(req, res){
     res.render("posts/show", {post:post});
   });
 });
+
+
+// show Photos
+router.get("/:id/photos", function(req, res){
+  Photo.find({}, ['path','caption'], {sort:{ _id: -1} }, function(err, photos) {
+    res.render('posts/photos', { title: 'NodeJS file upload tutorial', msg:req.query.msg, photolist : photos });
+  });
+});
+
+
 
 // edit
 router.get("/:id/edit", util.isLoggedin, checkPermission, function(req, res){

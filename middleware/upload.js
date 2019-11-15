@@ -3,8 +3,13 @@ const path = require("path");
 const multer = require("multer");
 var mongoose  = require('mongoose');
 var Photo     = require('../models/Photo');
+
+
 var storage = multer.diskStorage({
+
   destination: (req, file, callback) => {
+    console.log("confirm");
+    console.log(req.body.title);
     callback(null, path.join(`${__dirname}/../public/files`));
   },
   filename: (req, file, callback) => {
@@ -19,11 +24,13 @@ var storage = multer.diskStorage({
     var filename = `${file.originalname}`;
     callback(null, filename);
 
+
     /**
     * Create new record in mongoDB
     */
        //var fullPath = path.join(`${__dirname}/../files/`)+file.originalname;
        var document = {
+         title: 'req.body.title',
          path:     'files/'+file.originalname
        };
        var photo = new Photo(document);
@@ -38,6 +45,6 @@ var storage = multer.diskStorage({
 
 });
 
-var uploadFiles = multer({ storage: storage }).array("uploadfile", 10);
+var uploadFiles = multer({ storage: storage }).array("uploadfile", 100);
 var uploadFilesMiddleware = util.promisify(uploadFiles);
 module.exports = uploadFilesMiddleware;
