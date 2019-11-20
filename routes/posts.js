@@ -47,12 +47,6 @@ router.get("/:id", function(req, res){
 });
 
 
-// show Photos
-router.get("/:id/photos", function(req, res){
-  Photo.find({}, ['path','caption'], {sort:{ _id: -1} }, function(err, photos) {
-    res.render('posts/photos', { title: 'NodeJS file upload tutorial', msg:req.query.msg, photolist : photos });
-  });
-});
 
 
 

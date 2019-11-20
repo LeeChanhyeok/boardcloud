@@ -17,6 +17,13 @@ router.get('/', function(req, res, next) {
   });
 
 });
+// show Photos
+router.get("/:id/:photoid", function(req, res){
+  //console.log(req.params);
+  Photo.find({title:req.params.photoid}, ['path','caption'], {sort:{ _id: -1} }, function(err, photos) {
+    res.render('download/index', { title: 'NodeJS file upload tutorial', msg:req.query.msg, photolist : photos });
+  });
+});
 
 router.post("/", function(req, res){
   //console.log(req.body.multifile);
